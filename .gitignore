@@ -88,4 +88,3 @@ hs_err_pid*
 java*.hprof
 
 /.idea/
-versions.properties
