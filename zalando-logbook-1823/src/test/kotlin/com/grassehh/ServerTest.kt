@@ -16,21 +16,20 @@ import org.zalando.logbook.server.LogbookServer
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-
 class ServerTest {
     @OptIn(ExperimentalLogbookKtorApi::class)
     @Test
     fun testRoot() = testApplication {
-//        install(LogbookServer) {
-//            logbook = Logbook.builder()
-//                .sink(LogstashLogbackSink(JsonHttpLogFormatter()))
-//                .build()
-//        }
-        install(com.grassehh.logbook.LogbookServer) {
+        install(LogbookServer) {
             logbook = Logbook.builder()
                 .sink(LogstashLogbackSink(JsonHttpLogFormatter()))
                 .build()
         }
+//        install(com.grassehh.logbook.LogbookServer) {
+//            logbook = Logbook.builder()
+//                .sink(LogstashLogbackSink(JsonHttpLogFormatter()))
+//                .build()
+//        }
         routing {
             post("/test") {
                 call.receive<String>()
