@@ -16,9 +16,7 @@ import org.zalando.logbook.Logbook
 import org.zalando.logbook.Logbook.ResponseProcessingStage
 import org.zalando.logbook.common.readBytes
 
-class LogbookClient(
-    val logbook: Logbook,
-) {
+class LogbookClient(val logbook: Logbook) {
     class Config {
         var logbook: Logbook = Logbook.create()
     }
