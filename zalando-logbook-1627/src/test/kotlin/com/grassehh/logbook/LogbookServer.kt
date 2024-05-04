@@ -6,6 +6,8 @@ package com.grassehh.logbook
 
 import io.ktor.http.content.*
 import io.ktor.server.application.*
+import io.ktor.server.plugins.doublereceive.*
+import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.util.*
 import org.apiguardian.api.API
@@ -32,12 +34,14 @@ class LogbookServer(
             val config = Config().apply(configure)
             val plugin = LogbookServer(config.logbook)
 
+            pipeline.install(DoubleReceive)
+
             pipeline.intercept(ApplicationCallPipeline.Monitoring) {
                 val request = ServerRequest(call.request)
                 val requestWritingStage = plugin.logbook.process(request)
                 when {
-                    request.shouldBuffer() && !call.request.receiveChannel().isClosedForRead -> {
-                        request.buffer(call.request.receiveChannel().readBytes())
+                    request.shouldBuffer() -> {
+                        request.buffer(call.receiveChannel().readBytes())
                     }
                 }
                 val responseProcessingStage = requestWritingStage.write()
